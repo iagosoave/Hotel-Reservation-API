@@ -1,0 +1,18 @@
+# Habilitar console do H2
+spring.h2.console.enabled=true
+spring.h2.console.path=/h2-console
+
+# Configurações do banco de dados H2
+spring.datasource.url=jdbc:h2:mem:testdb
+spring.datasource.username=sa
+spring.datasource.password= iago
+spring.datasource.driverClassName=org.h2.Driver
+
+# Habilita o Spring Security
+spring.security.enabled=true
+
+# Configura um usuário e senha padrão (substitua com suas próprias credenciais)
+spring.security.user.name=admin
+spring.security.user.password=senha123
+spring.security.user.roles=ROLE_USER
+

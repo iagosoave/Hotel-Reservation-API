@@ -1,0 +1,2 @@
+INSERT INTO client (nome, cpf, data_nascimento, cidade, pais) VALUES 
+('João da Silva', '12345678901', '1990-05-15', 'São Paulo', 'Brasil');

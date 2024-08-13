@@ -1,0 +1,48 @@
+package com.hotelreservation.hotel.reservation.Service;
+
+import java.time.temporal.ChronoUnit;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.hotelreservation.hotel.reservation.Repository.ReservaRepository;
+import com.hotelreservation.hotel.reservation.modal.Reserva;
+
+@Service
+public class ReservaService {
+    @Autowired
+    private ReservaRepository reservaRepository;
+    
+
+    @Autowired
+    private ReservaRepository reservaRepository;
+
+    public Reserva save(Reserva reserva) {
+        return reservaRepository.save(reserva);
+    }
+
+    public void deleteById(Long id) {
+        reservaRepository.deleteById(id);
+    }
+
+    public boolean existsById(Long id) {
+        return reservaRepository.existsById(id);
+    }
+    
+    
+
+    public Reserva save(Reserva reserva) {
+        reserva.setValorTotal(calcularValorTotal(reserva));
+        return reservaRepository.save(reserva);
+    }
+
+    private double calcularValorTotal(Reserva reserva) {
+        long dias = ChronoUnit.DAYS.between(reserva.getDataEntrada(), reserva.getDataSaida());
+        double valorBase = reserva.getNumeroQuarto() <= 30 ? 200 : 350;
+        double valorPorPessoa = 85 * (reserva.getQuantidadePessoas() - 1);
+        return valorBase * dias + valorPorPessoa;
+    }
+    
+    
+    
+}

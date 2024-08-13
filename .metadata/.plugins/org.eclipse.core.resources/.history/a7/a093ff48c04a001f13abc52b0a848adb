@@ -1,0 +1,42 @@
+package com.hotelreservation.hotel.reservation.Service;
+
+import java.time.LocalDate;
+import java.time.Period;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.hotelreservation.hotel.reservation.Repository.ClientRepository;
+import com.hotelreservation.hotel.reservation.exception.InvalidCpfException;
+import com.hotelreservation.hotel.reservation.exception.UnderageException;
+import com.hotelreservation.hotel.reservation.modal.Client;
+
+@Service
+public class ClientService {
+
+    @Autowired
+    private ClientRepository clientRepository;
+
+    public Client save(Client client) {
+        validateCliente(client);
+        return clientRepository.save(client);
+    }
+
+    public List<Client> getAllClients() {
+        return clientRepository.findAll();
+    }
+
+    private void validateCliente(Client cliente) {
+        if (!isValidCpf(cliente.getCpf())) {
+            throw new InvalidCpfException("CPF inválido");
+        }
+        if (Period.between(cliente.getDataNascimento(), LocalDate.now()).getYears() < 18) {
+            throw new UnderageException("Cliente deve ser maior de 18 anos");
+        }
+    }
+
+    private boolean isValidCpf(String cpf) {
+        return cpf.matches("\\d{11}");
+    }
+}

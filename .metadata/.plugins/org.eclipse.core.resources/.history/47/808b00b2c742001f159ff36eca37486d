@@ -1,0 +1,19 @@
+CREATE TABLE IF NOT EXISTS client (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL,
+    cpf VARCHAR(11) NOT NULL,
+    data_nascimento DATE NOT NULL,
+    cidade VARCHAR(255) NOT NULL,
+    pais VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS reserva (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    cliente_id BIGINT NOT NULL,
+    data_entrada DATE NOT NULL,
+    data_saida DATE NOT NULL,
+    quantidade_pessoas INT NOT NULL,
+    numero_quarto INT NOT NULL,
+    valor_total DOUBLE,
+    FOREIGN KEY (cliente_id) REFERENCES client(id)
+);

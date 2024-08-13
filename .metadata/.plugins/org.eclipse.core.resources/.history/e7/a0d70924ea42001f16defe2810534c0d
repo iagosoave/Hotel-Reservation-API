@@ -1,0 +1,27 @@
+CREATE TABLE IF NOT EXISTS client (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL,
+    cpf VARCHAR(11) NOT NULL,
+    data_nascimento DATE NOT NULL,
+    cidade VARCHAR(255) NOT NULL,
+    pais VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS reserva (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    cliente_id BIGINT NOT NULL,
+    data_entrada DATE NOT NULL,
+    data_saida DATE NOT NULL,
+    quantidade_pessoas INT NOT NULL,
+    numero_quarto INT NOT NULL,
+    valor_total DOUBLE,
+    FOREIGN KEY (cliente_id) REFERENCES client(id)
+);
+
+INSERT INTO client (nome, cpf, data_nascimento, cidade, pais) VALUES 
+('João Silva', '12345678901', '1980-05-15', 'São Paulo', 'Brasil'),
+('Maria Oliveira', '10987654321', '1990-07-22', 'Rio de Janeiro', 'Brasil');
+
+INSERT INTO reserva (cliente_id, data_entrada, data_saida, quantidade_pessoas, numero_quarto, valor_total) VALUES 
+(1, '2023-07-20', '2023-07-25', 2, 101, 1500.00),
+(2, '2023-08-10', '2023-08-15', 3, 202, 2250.00);

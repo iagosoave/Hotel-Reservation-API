@@ -1,0 +1,97 @@
+package com.hotelreservation.hotel.reservation.Service;
+
+import java.time.LocalDate;
+import java.time.Period;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.hotelreservation.hotel.reservation.Repository.ClientRepository;
+import com.hotelreservation.hotel.reservation.exception.InvalidCpfException;
+import com.hotelreservation.hotel.reservation.exception.UnderageException;
+import com.hotelreservation.hotel.reservation.modal.ClientDTO;
+
+@Service
+public class ClientService {
+
+    @Autowired
+    private ClientRepository clientRepository;
+
+    public ClientDTO save(ClientDTO clientDTO) {
+        Client client = dtoToEntity(clientDTO);
+        validateClient(client);
+        Client savedClient = clientRepository.save(client);
+        return entityToDto(savedClient);
+    }
+
+    public List<ClientDTO> getAllClients() {
+        List<Client> clients = clientRepository.findAll();
+        return clients.stream()
+                      .map(this::entityToDto)
+                      .toList();
+    }
+
+    public ClientDTO getClientById(Long id) {
+        Client client = clientRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
+        return entityToDto(client);
+    }
+
+    public ClientDTO updateClient(Long id, ClientDTO clientDTO) {
+        return clientRepository.findById(id)
+            .map(client -> {
+                client.setNome(clientDTO.getNome());
+                client.setCpf(clientDTO.getCpf());
+                client.setDataNascimento(clientDTO.getDataNascimento());
+                client.setCidade(clientDTO.getCidade());
+                client.setPais(clientDTO.getPais());
+                validateClient(client);
+                Client updatedClient = clientRepository.save(client);
+                return entityToDto(updatedClient);
+            })
+            .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
+    }
+
+    public void deleteClient(Long id) {
+        if (!clientRepository.existsById(id)) {
+            throw new RuntimeException("Cliente não encontrado");
+        }
+        clientRepository.deleteById(id);
+    }
+
+    private void validateClient(Client client) {
+        if (!isValidCpf(client.getCpf())) {
+            throw new InvalidCpfException("CPF inválido");
+        }
+        if (Period.between(client.getDataNascimento(), LocalDate.now()).getYears() < 18) {
+            throw new UnderageException("Cliente deve ser maior de 18 anos");
+        }
+    }
+
+    private boolean isValidCpf(String cpf) {
+        return cpf.matches("\\d{11}");
+    }
+
+    private Client dtoToEntity(ClientDTO dto) {
+        Client client = new Client();
+        client.setNome(dto.getNome());
+        client.setCpf(dto.getCpf());
+        client.setDataNascimento(dto.getDataNascimento());
+        client.setCidade(dto.getCidade());
+        client.setPais(dto.getPais());
+        return client;
+    }
+
+    private ClientDTO entityToDto(Client client) {
+        ClientDTO dto = new ClientDTO();
+        dto.setId(client.getId());
+        dto.setNome(client.getNome());
+        dto.setCpf(client.getCpf());
+        dto.setDataNascimento(client.getDataNascimento());
+        dto.setCidade(client.getCidade());
+        dto.setPais(client.getPais());
+        return dto;
+    }
+}
+

@@ -1,0 +1,25 @@
+# Use a imagem do Maven para compilar a aplicação
+FROM maven:3.8.6-openjdk-17 AS build
+WORKDIR /app
+
+# Copie o arquivo pom.xml e o diretório src para o diretório de trabalho
+COPY pom.xml .
+COPY src ./src
+
+# Compile a aplicação
+RUN mvn clean package -DskipTests
+
+# Use uma imagem leve do OpenJDK para executar a aplicação
+FROM openjdk:17-jdk-slim
+
+# Configure o diretório de trabalho no contêiner
+WORKDIR /app
+
+# Copie o arquivo JAR da fase de build para o contêiner
+COPY --from=build /app/target/*.jar app.jar
+
+# Exponha a porta em que a aplicação será executada
+EXPOSE 8080
+
+# Comando para executar a aplicação
+ENTRYPOINT ["java", "-jar", "app.jar"]

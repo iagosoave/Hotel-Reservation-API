@@ -1,0 +1,30 @@
+package Service;
+
+
+
+import java.time.temporal.ChronoUnit;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import Repository.ReservaRepository;
+import modal.Reserva;
+
+@Service
+public class ReservaService {
+    @Autowired
+    private ReservaRepository reservaRepository;
+
+    public Reserva save(Reserva reserva) {
+        reserva.setValorTotal(calcularValorTotal(reserva));
+        return reservaRepository.save(reserva);
+    }
+
+    private double calcularValorTotal(Reserva reserva) {
+        long dias = ChronoUnit.DAYS.between(reserva.getDataEntrada(), reserva.getDataSaida());
+        double valorBase = reserva.getNumeroQuarto() <= 30 ? 200 : 350;
+        double valorPorPessoa = 85 * (reserva.getQuantidadePessoas() - 1); // -1 porque o valor base já cobre uma pessoa
+        return valorBase * dias + valorPorPessoa;
+    }
+}
+
