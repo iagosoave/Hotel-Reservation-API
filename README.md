@@ -9,7 +9,6 @@ Este projeto é uma API de reserva de hotel construída usando Java com Spring B
 - **Java 17**
 - **Spring Boot 3**
 - **Spring Data JPA**
-- **Spring Security**
 - **H2 Database**
 - **Maven**
 - **Docker**
