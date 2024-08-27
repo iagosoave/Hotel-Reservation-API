@@ -75,10 +75,7 @@ A API foi organizada seguindo a arquitetura MVC (Model-View-Controller) com as s
 - POST /reservas: Cria uma nova reserva.
 - PUT /reservas/{id}: Atualiza uma reserva existente.
 - DELETE /reservas/{id}: Deleta uma reserva específica.
-
-## Licença
-Este projeto está licenciado sob a Licença MIT. Veja o arquivo LICENSE para mais detalhes.
-
+- 
 ## Contato
 - Nome do Desenvolvedor: Iago Soave
 - GitHub: Iagosoave
