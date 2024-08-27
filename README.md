@@ -37,4 +37,40 @@ A API foi organizada seguindo a arquitetura MVC (Model-View-Controller) com as s
 1. **Clone o repositório**:
    ```bash
    git clone https://github.com/SeuUsuario/hotel-reservation.git
+   
+2. **Navegue até o diretório do projeto**:
+   ```bash
+   cd hotel-reservation
+   
+3. **Construa o projeto com Maven**:
+   ```bash
+   mvn clean package
+   
+4. **Execute a aplicação**:
+   ```bash
+   java -jar target/hotel-reservation-0.0.1-SNAPSHOT.jar
 
+## Executando com Docker
+
+
+1. **Construir a imagem Docker**:
+   ```bash
+   docker build -t hotel-reservation:latest .
+   
+2. **Rodar a aplicação em um container Docker**:
+   ```bash
+   docker run -p 8080:8080 hotel-reservation:latest
+
+## Endpoints Principais
+**Clientes**
+- GET /api/clients: Retorna todos os clientes.
+- GET /api/clients/{id}: Retorna os detalhes de um cliente específico.
+- POST /api/clients: Cria um novo cliente.
+- PUT /api/clients/{id}: Atualiza as informações de um cliente existente.
+- DELETE /api/clients/{id}: Deleta um cliente específico.
+**Reservas**
+- GET /reservas: Retorna todas as reservas.
+- GET /reservas/{id}: Retorna os detalhes de uma reserva específica.
+- POST /reservas: Cria uma nova reserva.
+- PUT /reservas/{id}: Atualiza uma reserva existente.
+- DELETE /reservas/{id}: Deleta uma reserva específica.
